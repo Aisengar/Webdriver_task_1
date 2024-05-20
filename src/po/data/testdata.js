@@ -1,6 +1,6 @@
 const testData = {
     codeText: "Hello from WebDriver",
-    expectedTitle: "helloweb",
+    Title: "helloweb",
     expirationText: "10 Minutes"
 };
 

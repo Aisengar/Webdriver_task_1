@@ -1,7 +1,7 @@
 //const { Key } = require('webdriverio');
 
 const testData = require('../../po/data/testdata.js');
-
+const PastebinPage = require('../../po/pages/pastebin.page.js');
 
 describe("WebdriverIO Test", () => {
 
@@ -14,45 +14,35 @@ describe("WebdriverIO Test", () => {
     });
 
     describe("Create a new Paste", () => {
-        it("Create a new paste with the following parameters: Title: helloweb, Code: Hello from WebDriver, Expiration: 10 Minutes", async () => {
+        it("Create a new paste with the following parameters: Title: helloweb, Code: Hello from WebDriver, Expiration: 10 Minutes", async () => {  
+            const pastebinPage = new PastebinPage(); //Initialize the PastebinPage object  
             // Input the code for the paste
-            const codeInput = await browser.$('[name="PostForm[text]"]');
-            const codeText = testData.codeText;
-            await codeInput.setValue(codeText);
-    
-            // Input the title for the paste
-            const titleInput = await browser.$('[name="PostForm[name]"]');
-            const expectedTitle = testData.expectedTitle;
-            await titleInput.setValue(expectedTitle);
-    
+            await pastebinPage.setCode(testData.codeText);
+            //imput the title for the paste
+            await pastebinPage.setTitle(testData.Title); 
             // Set the expiration to 10 minutes
-            const dropdown = await browser.$('#select2-postform-expiration-container');
-            await dropdown.click();
-            const optionElement = await browser.$('//li[contains(text(), "10 Minutes")]');
-            await optionElement.click();
+            await pastebinPage.setExpiration(testData.expirationText);
 
             // Verify the code input
-            const actualCode = await codeInput.getValue();
-            expect(actualCode).toEqual(codeText);
+            const actualCode = await pastebinPage.codeInput.getValue();
+            expect(actualCode).toEqual(testData.codeText);
     
             // Verify the title input
-            const actualTitle = await titleInput.getValue();
-            console.log(`Actual Title: ${actualTitle}`); // Log the actual title
-            expect(actualTitle).toEqual(expectedTitle);
+            const actualTitle = await pastebinPage.titleInput.getValue();
+            expect(actualTitle).toEqual(testData.Title);
     
             // Verify the expiration selection
-            const selectedOption = await dropdown.getText();
-            console.log(`Selected Option: ${selectedOption}`); // Log the selected option
-            expect(selectedOption).toHaveText("10 Minutes");
+            const selectedOption = await pastebinPage.expirationDropdown.selectedText();
+            console.log(selectedOption);
+            expect(selectedOption).toEqual(testData.expirationText);
     
             // Click on the "Create New Paste" and wait for 2 seconds so we can check if the paste data is okay
             await browser.pause(2000);
-            const createButton = await browser.$('button.btn.-big[type="submit"]');
-            await createButton.click();
+            await pastebinPage.createPaste();
     
             // Verification to ensure the paste was created
-            await browser.pause(2000);
-            const newPasteUrl = await browser.getUrl();
+            await browser.pause(5000);
+            const newPasteUrl = await pastebinPage.getCurrentUrl();
             console.log(`New Paste URL: ${newPasteUrl}`); // Log the URL of the new paste
         });
         /*

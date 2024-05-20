@@ -41,7 +41,7 @@ describe("WebdriverIO Test", () => {
             await pastebinPage.createPaste();
             
             // Verification to ensure the paste was created
-            await browser.pause(5000);
+            //await browser.pause(5000);
             const newPasteUrl = await pastebinPage.getCurrentUrl();
             console.log(`New Paste URL: ${newPasteUrl}`); // Log the URL of the new paste
         });

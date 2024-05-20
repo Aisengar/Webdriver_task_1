@@ -1,6 +1,6 @@
 //const { Key } = require('webdriverio');
-//const pastebinPage = require('../po/pages/pastebin.page');
-//const testData = require('../po/data/testData');
+
+const testData = require('../../po/data/testdata.js');
 
 
 describe("WebdriverIO Test", () => {
@@ -15,46 +15,45 @@ describe("WebdriverIO Test", () => {
 
     describe("Create a new Paste", () => {
         it("Create a new paste with the following parameters: Title: helloweb, Code: Hello from WebDriver, Expiration: 10 Minutes", async () => {
-            
             // Input the code for the paste
             const codeInput = await browser.$('[name="PostForm[text]"]');
-            const codeText = "Hello from WebDriver";
+            const codeText = testData.codeText;
             await codeInput.setValue(codeText);
-
-            // Verify the code input
-            const actualCode = await codeInput.getValue();
-            expect(codeText).toEqual(codeText);
-
+    
             // Input the title for the paste
             const titleInput = await browser.$('[name="PostForm[name]"]');
-            const expectedTitle = "helloweb";
+            const expectedTitle = testData.expectedTitle;
             await titleInput.setValue(expectedTitle);
-
-            // Verify the title input
-            const actualTitle = await titleInput.getValue();
-            console.log(actualTitle);
-            expect(actualTitle).toEqual(expectedTitle);
-
+    
             // Set the expiration to 10 minutes
             const dropdown = await browser.$('#select2-postform-expiration-container');
             await dropdown.click();
             const optionElement = await browser.$('//li[contains(text(), "10 Minutes")]');
             await optionElement.click();
 
+            // Verify the code input
+            const actualCode = await codeInput.getValue();
+            expect(actualCode).toEqual(codeText);
+    
+            // Verify the title input
+            const actualTitle = await titleInput.getValue();
+            console.log(`Actual Title: ${actualTitle}`); // Log the actual title
+            expect(actualTitle).toEqual(expectedTitle);
+    
             // Verify the expiration selection
             const selectedOption = await dropdown.getText();
-            console.log(selectedOption);
+            console.log(`Selected Option: ${selectedOption}`); // Log the selected option
             expect(selectedOption).toHaveText("10 Minutes");
-
-            // Click on the"Create New Paste" and wait for 2 seconds so we can check if the paste data is okay
+    
+            // Click on the "Create New Paste" and wait for 2 seconds so we can check if the paste data is okay
             await browser.pause(2000);
             const createButton = await browser.$('button.btn.-big[type="submit"]');
             await createButton.click();
-
+    
             // Verification to ensure the paste was created
-            await browser.pause(2000); // i want to wait 2 seconds to ensure the paste was created
+            await browser.pause(2000);
             const newPasteUrl = await browser.getUrl();
-            console.log(newPasteUrl); // we can get the url of the new paste
+            console.log(`New Paste URL: ${newPasteUrl}`); // Log the URL of the new paste
         });
         /*
         // Select syntax highlighting and verify it

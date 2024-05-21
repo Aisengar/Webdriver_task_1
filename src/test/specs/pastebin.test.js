@@ -20,24 +20,24 @@ describe("WebdriverIO Test", () => {
             
             // Input the code for the paste
             await pastebinPage.setCode(testData.codeText);
+
+            // Set the expiration to 10 minutes
+            await pastebinPage.setExpiration(testData.expirationText);
             
             //imput the title for the paste
             await pastebinPage.setTitle(testData.Title); 
             
-            // Set the expiration to 10 minutes
-            await pastebinPage.setExpiration(testData.expirationText);
-            
             // Verify the code input
             const actualCode = await pastebinPage.codeInput.getValue();
-            expect(actualCode).toEqual(testData.codeText);
+            await expect(actualCode).toEqual(testData.codeText);
             
             // Verify the title input
             const actualTitle = await pastebinPage.titleInput.getValue();
-            expect(actualTitle).toEqual(testData.Title);
+            await expect(actualTitle).toEqual(testData.Title);
             
             // Verify the expiration selection
             const selectedOption = await pastebinPage.expirationDropdown.selectedText();
-            expect(selectedOption).toEqual(testData.expirationText);
+            await expect(selectedOption).toEqual(testData.expirationText);
             
             // Click on the "Create New Paste" button
             await pastebinPage.createPaste();
@@ -55,16 +55,16 @@ describe("WebdriverIO Test", () => {
 
              // Input the code for the paste
             await pastebinPage.setCode(testData.codeText2);
-            
-            //imput the title for the paste
-            await pastebinPage.setTitle(testData.Title2); 
-            
+
             // Set the expiration to 10 minutes
             await pastebinPage.setExpiration(testData.expirationText);
 
             // Select syntax highlighting and verify it
             const syntaxDropdown = new Dropdown('#select2-postform-format-container', '.select2-search__field');
             await syntaxDropdown.SelectByVisibleText('Bash');
+            
+            //imput the title for the paste
+            await pastebinPage.setTitle(testData.Title2); 
             
             // Click on the "Create New Paste" button
             await pastebinPage.createPaste();
@@ -75,8 +75,8 @@ describe("WebdriverIO Test", () => {
             console.log(`New Paste URL: ${newPasteUrl}`);
 
             // Initialize the new paste page
-            const pasteNewPage = new pastebinNewPage(testData.pastebinwebtest);//this one oppen an already create paste url for testing 
-            //const pasteNewPage = new pastebinNewPage(newPasteUrl);// this one captures the new create paste url and open it 
+            //const pasteNewPage = new pastebinNewPage(testData.pastebinwebtest);//this one oppen an already create paste url for testing 
+            const pasteNewPage = new pastebinNewPage(newPasteUrl);// this one captures the new create paste url and open it 
             
             //open a new page
             await pasteNewPage.open();
@@ -84,15 +84,15 @@ describe("WebdriverIO Test", () => {
             await browser.pause(2000);
             // Verify the paste code content
             const actualCode = await pasteNewPage.getPasteContent();
-            expect(actualCode).toEqual(testData.codetest);
+            await expect(actualCode).toEqual(testData.codetest);
 
             // Verify the paste page title
             const actualTitle = await pasteNewPage.getPageTitle();
-            expect(actualTitle).toEqual(testData.Title2+" - Pastebin.com");
+            await expect(actualTitle).toEqual(testData.Title2+" - Pastebin.com");
 
             //Verify the paste syntax
             const actualSyntax = await pasteNewPage.getSyntax();
-            expect(actualSyntax).toEqual(testData.syntaxText);
+            await expect(actualSyntax).toEqual(testData.syntaxText);
             
         })
     })    

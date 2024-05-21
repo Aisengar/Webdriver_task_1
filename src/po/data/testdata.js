@@ -7,7 +7,8 @@ const testData = {
     git reset $(git commit-tree HEAD^{tree} -m 'Legacy code')
     git push origin master --force
     git push heroku master`,
-    Title2: "how to gain dominance among developers"
+    Title2: "how to gain dominance among developers",
+    codetest: "git reset $(git commit-tree HEAD^{tree} -m 'Legacy code')"
 };
 
 module.exports = testData;

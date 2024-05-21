@@ -75,7 +75,9 @@ describe("WebdriverIO Test", () => {
             console.log(`New Paste URL: ${newPasteUrl}`);
 
             // Initialize the new paste page
-            const pasteNewPage = new pastebinNewPage(newPasteUrl);
+            const pasteNewPage = new pastebinNewPage(testData.pastebinwebtest);//this one oppen an already create paste url for testing 
+            //const pasteNewPage = new pastebinNewPage(newPasteUrl);// this one captures the new create paste url and open it 
+            
             //open a new page
             await pasteNewPage.open();
             
@@ -86,7 +88,7 @@ describe("WebdriverIO Test", () => {
 
             // Verify the paste page title
             const actualTitle = await pasteNewPage.getPageTitle();
-            expect(actualTitle).toEqual(testData.codeText+" - Pastebin.com");
+            expect(actualTitle).toEqual(testData.Title2+" - Pastebin.com");
 
             //Verify the paste syntax
             const actualSyntax = await pasteNewPage.getSyntax();
